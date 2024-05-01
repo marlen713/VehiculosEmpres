@@ -23,4 +23,3 @@ class RegistrarContabilidad (models.Model):
     valor = models.FloatField(null=False, blank=False)
     vehiculo = models.OneToOneField('Vehiculo', related_name='contabilidad', null=False, blank=False, on_delete=models.PROTECT)
 
-    

@@ -12,42 +12,67 @@ def crear_chofer(rut, nombre, apellido, activo):
     chofer.save()
     return chofer
 
-def crear_registro_contable(fecha_compra, valor, vehiculo):
-    registro_contable = RegistrarContabilidad(fecha_compra=fecha_compra, valor=valor, vehiculo=vehiculo)
-    registro_contable.save()
-    return registro_contable
+def crear_registro_contable(fecha_compra,valor,vehiculo):
+    id_auto = Vehiculo.objects.get(patente=vehiculo)
+    registro = RegistrarContabilidad(fecha_compra=fecha_compra,valor=valor,vehiculo=id_auto)
+    registro.save()
+    return registro
 
-def deshabilitar_chofer(chofer):
-    chofer.activo = False
-    chofer.save()
-    return chofer
+def deshabilitar_chofer(pk_id):
+    try:
+        chofer = Chofer.objects.get(rut=pk_id)
+        chofer.activo = False
+        chofer.save()
+        return False
+    except:
+        print("error en deshabilitar chofer")
 
-def deshabilitar_vehiculo(vehiculo):
-    vehiculo.activo = False
-    vehiculo.save()
-    return vehiculo 
 
-def  habilitar_chofer(chofer):
-    chofer.activo = True
-    chofer.save()
-    return chofer  
+def deshabilitar_vehiculo(pk_id):
+    try:
+        auto = Vehiculo.objects.get(patente=pk_id)
+        auto.activo= False
+        auto.save()
+        return False
+    except:
+        print("error en deshabilitar vehiculo")
 
-def habilitar_vehiculo(vehiculo):
-    vehiculo.activo = True
-    vehiculo.save()
-    return vehiculo
 
-def obtener_vehiculo(patente):
-    vehiculos = Vehiculo.objects.all(patente=patente)
-    return vehiculos
+def habilitar_chofer(pk_id):
+    try:
+        chofer = Chofer.objects.get(rut=pk_id)
+        chofer.activo = True
+        chofer.save()
+        return True
+    except:
+        print("error en habilitar chofer")
+
+
+def habilitar_vehiculo(pk_id):
+    try:
+        auto = Vehiculo.objects.get(patente=pk_id)
+        auto.activo= True
+        auto.save()
+        return True
+    except:
+        print("error en habilitar vehiculo")
+
+
+def obtener_vehiculo(pk_id):
+    try:
+        auto = Vehiculo.objects.get(patente=pk_id)
+        return auto
+    except:
+        print("error en obtener vehiculo")
+
 
 def obtener_chofer(rut):
     chofer = Chofer.objects.get(rut=rut)
     return chofer
 
 def  asignar_chofer_a_vehiculo(vehiculo,chofer):
-    vehiculo.chofer = chofer
-    vehiculo.save()
+    chofer.vehiculo = vehiculo 
+    #vehiculo.save()
     chofer.save()
 
 def imprimir_datos_vehiculos(): 
